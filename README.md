@@ -60,6 +60,9 @@ DPO训练数据文件以 dpo.json 为后缀结尾，放到 dataset/ 目录下，
 ## 分词(Tokenizer)
 训练Tokenizer，用于将人类可读的文本转换到数字空间中的数字ID序列，最终生成 分词模型文件 (tokenizer/xxx.model) 与 词表文件 (tokenizer/xxx.vocab)
 
+- 训练数据文件位置
+dataset/*.txt
+
 - 训练脚本
 ```python
 python trainer/train_sp.py
@@ -68,6 +71,9 @@ python trainer/train_sp.py
 
 ## 预训练(PTM)
 学习知识，构建模型的模糊认知，让模型在海量文本中学习语言的统计规律、事实知识和基础推理能力，最终生成 基座模型文件 (model/sun_base.pth)
+
+- 训练数据文件位置
+dataset/*pretrain.txt
 
 - 训练脚本
 ```python

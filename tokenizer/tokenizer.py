@@ -1,5 +1,12 @@
+import os
+import sys
 import sentencepiece as spm
 import torch
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from config.config import LLM_CONFIG
+from model.llm import LLM
 
 class Tokenizer():
     def __init__(self, spm_model_path):
@@ -48,9 +55,6 @@ def generate_text_simple(model, idx, max_new_tokens, context_size):
 
 
 if __name__ == "__main__":
-    from config.config import LLM_CONFIG
-    from model.llm import LLM
-
     start_context = "郭靖挥出一拳"
     tokenizer = Tokenizer(LLM_CONFIG['tokenizer_path'])
 
@@ -58,11 +62,13 @@ if __name__ == "__main__":
     model.eval() # 设置为评估模式
 
     torch.manual_seed(123)
+    start_context = tokenizer.text_to_token_ids(start_context)
+    start_context = torch.tensor([start_context])
     token_ids = generate_text_simple(
         model=model,
-        idx=tokenizer.text_to_token_ids(start_context),
+        idx=start_context,
         max_new_tokens=10,
         context_size=LLM_CONFIG["context_length"]
     )
-    text = tokenizer.token_ids_to_text(token_ids)
+    text = tokenizer.token_ids_to_text(token_ids.tolist())
     print(text)
